@@ -93,7 +93,12 @@ X = train_np[:, 1:]
 clf = linear_model.LogisticRegression(C=1.0, penalty='l1', tol=1e-6)
 clf.fit(X, y)
     
-# print clf
+print
+print "Classifier: "
+print clf
+print
+print "Coefficients:"
+print pd.DataFrame({"columns":list(train_df.columns)[1:], "coef":list(clf.coef_.T)})
 
 ##############################################
 # Testing
@@ -129,11 +134,10 @@ result = pd.DataFrame({'PassengerId':data_test['PassengerId'].as_matrix(), 'Surv
 result.to_csv("myresult.csv", index=False)
 
 
-##############################################
-# Learning Curve
-##############################################
+# ##############################################
+# # Learning Curve
+# ##############################################
 
-# import numpy as np
 # import matplotlib.pyplot as plt
 # from sklearn.learning_curve import learning_curve
 
@@ -178,29 +182,29 @@ result.to_csv("myresult.csv", index=False)
 
 # plot_learning_curve(clf, u"Learning Curve", X, y)
 
-##############################################
-# Cross Validation
-##############################################
+# ##############################################
+# # Cross Validation
+# ##############################################
 
-from sklearn import cross_validation
+# from sklearn import cross_validation
 
-# Simple Score
-clf = linear_model.LogisticRegression(C=1.0, penalty='l1', tol=1e-6)
-all_data = df.filter(regex='Survived|Age_.*|SibSp|Parch|Fare_.*|Cabin_.*|Embarked_.*|Sex_.*|Pclass_.*')
-X = all_data.as_matrix()[:,1:]
-y = all_data.as_matrix()[:,0]
-print cross_validation.cross_val_score(clf, X, y, cv=5)
+# # Simple Score
+# clf = linear_model.LogisticRegression(C=1.0, penalty='l1', tol=1e-6)
+# all_data = df.filter(regex='Survived|Age_.*|SibSp|Parch|Fare_.*|Cabin_.*|Embarked_.*|Sex_.*|Pclass_.*')
+# X = all_data.as_matrix()[:,1:]
+# y = all_data.as_matrix()[:,0]
+# print cross_validation.cross_val_score(clf, X, y, cv=5)
 
-# split to 3
-split_train, split_cv = cross_validation.train_test_split(df, test_size=0.3, random_state=0)
-train_df = split_train.filter(regex='Survived|Age_.*|SibSp|Parch|Fare_.*|Cabin_.*|Embarked_.*|Sex_.*|Pclass_.*')
-# Generate model
-clf = linear_model.LogisticRegression(C=1.0, penalty='l1', tol=1e-6)
-clf.fit(train_df.as_matrix()[:,1:], train_df.as_matrix()[:,0])
+# # split to 3
+# split_train, split_cv = cross_validation.train_test_split(df, test_size=0.3, random_state=0)
+# train_df = split_train.filter(regex='Survived|Age_.*|SibSp|Parch|Fare_.*|Cabin_.*|Embarked_.*|Sex_.*|Pclass_.*')
+# # Generate model
+# clf = linear_model.LogisticRegression(C=1.0, penalty='l1', tol=1e-6)
+# clf.fit(train_df.as_matrix()[:,1:], train_df.as_matrix()[:,0])
 
-# cross validation prediction
+# # cross validation prediction
 
-cv_df = split_cv.filter(regex='Survived|Age_.*|SibSp|Parch|Fare_.*|Cabin_.*|Embarked_.*|Sex_.*|Pclass_.*')
-predictions = clf.predict(cv_df.as_matrix()[:,1:])
-#split_cv[ predictions != cv_df.as_matrix()[:,0] ].drop()
+# cv_df = split_cv.filter(regex='Survived|Age_.*|SibSp|Parch|Fare_.*|Cabin_.*|Embarked_.*|Sex_.*|Pclass_.*')
+# predictions = clf.predict(cv_df.as_matrix()[:,1:])
+# #split_cv[ predictions != cv_df.as_matrix()[:,0] ].drop()
 
